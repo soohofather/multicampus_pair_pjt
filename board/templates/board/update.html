@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+
+{% block content %}
+
+
+
+<div class="container">
+    <h1>수정 페이지</h1>
+    <form action="" method="POST">
+        {% csrf_token %}
+
+        {% bootstrap_form review_form %}
+        <div class="d-grid gap-2">
+            <input class="btn btn-primary" type="submit" value="수정">
+        </div>
+    </form>
+</div>
+{% endblock %}>
