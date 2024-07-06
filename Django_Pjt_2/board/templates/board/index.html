@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+  <div class="container">
+    <h1 class='text-center mb-5 fw-bold'>영화 리뷰</h1>
+
+    <table class="table table-hover mb-3">
+      <thead>
+        <tr>
+          <th scope="col">PK</th>
+          <th scope="col">영화 이름</th>
+          <th scope="col">리뷰 제목</th>
+          <th scope="col">평점</th>
+          <th scope="col">글 작성 시간</th>
+
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in review %}
+          <tr onclick='location.href="{{ r.pk }}"' style='cursor: pointer;'>
+            <td>{{ r.pk }}</td>
+            <td>{{ r.movie_name }}</td>
+            <td>{{ r.title }}</td>
+            <td>{{ r.grade }}</td>
+            <td>{{ r.updated_at }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <nav aria-label="Page navigation example ">
+    <ul class="pagination  justify-content-center">
+      <li class="page-item">
+        <a class="page-link" href="{% url 'board:index' %}">이전</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="#">1</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="#">2</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="#">3</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="#">4</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="#">5</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="#">6</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="#">다음</a>
+      </li>
+    </ul>
+  </nav>
+{% endblock %}
