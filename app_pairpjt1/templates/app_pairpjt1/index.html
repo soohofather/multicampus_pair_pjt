@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block content %}
+
+</div>
+
+<body>
+
+
+  <table class="table">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col">리뷰 번호</th>
+        <th scope="col">리뷰 제목</th>
+        <th scope="col">작성 시간</th>
+      </tr>
+    </thead>
+
+    {% for review in reviews %}
+
+    <tbody>
+      <tr>
+        <th scope="row">{{ review.pk }}</th>
+        <td>
+          <a href="{% url 'pjt1:detail' review.pk %}">{{ review.title }}</a>
+        </td>
+        <td>{{ review.created_at }}</td>
+      </tr>
+    </tbody>
+    {% endfor %}
+  </table>
+
+
+  <div class="text-end ">
+
+    <a class="btn btn-primary" href="{% url 'pjt1:review' %}">리뷰 작성</a>
+
+  </div>
+
+
+  <div style="height:500px ;"></div>
+
+
+  <footer class="bg-dark text-white text-center fixed-bottom">
+    <h2>
+      2022-09-30 Django 페어 프로젝트 01 이성훈,이동현
+    </h2>
+
+  </footer>
+
+</body>
+
+{% endblock %}
