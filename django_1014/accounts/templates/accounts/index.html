@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1> 회원관리 페이지</h1>
+<hr>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">PK</th>
+      <th scope="col">ID</th>
+      <th scope="col"></th>
+
+    </tr>
+  </thead>
+  <tbody>
+    {% for i in user %}
+    <tr onclick='location.href="{{ i.pk }}"' style='cursor: pointer;'>
+      <th scope="row">{{ i.pk }}</th>
+      <td>{{ i.username }}</td>
+      <td><a class="btn btn-danger btn-sm" href="{% url 'accounts:delete' i.pk %}">삭제</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock content %}
