@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load imagekit %}
+
+{% block body %}
+<hr>
+{% if request.user.is_authenticated %}
+<div class='text-end'>
+  <a class='btn btn-primary btn-sm my-1' href="{% url 'reviews:create' %}">글쓰기</a>
+</div>
+{% endif %}
+
+<div class='d-flex align-content-around justify-content-between flex-wrap my-2'>
+  {% for review in reviews %}
+  <div class="card my-2 border-secondary" style="width: 14rem; ">
+    {% if review.image %}
+      {% thumbnail "200x167" review.image as thumb %}
+      <img src="{{ review.image.url }}" class="card-img-top" alt="{{ review.image }}" height="{{ thumb.height }}">
+    {% else %}
+      <img src="https://picsum.photos/200/150" class="card-img-top" alt="imagefile">
+    {% endif %}
+    <div class="card-body">
+      <div class='d-flex justify-content-between'>
+          <p class="card-text fw-bold">{{ review.user }}</p>
+          <p class="card-text">No.{{ review.pk }}</p>
+      </div>
+      <div class='py-3'>
+        <h4 class="card-title"><a href="{% url 'reviews:detail' review.pk %}">{{ review.title }}</a></h4>
+      </div>
+      <div class='text-end'>
+        {% if request.user in review.like_users.all %}
+        <a href="{% url 'reviews:like' review.pk %}" class="btn btn-danger btn-sm">♥ {{ review.like_users.count }} </a>
+        {% else %}
+          <a href="{% url 'reviews:like' review.pk %}" class="btn btn-outline-danger btn-sm">♥ {{ review.like_users.count }} </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+<hr>
+
+{% endblock body %}

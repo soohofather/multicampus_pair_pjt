@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% block body %}
+<div class="row my-4">
+  <div class="col-4">
+      {% if user.image %}
+      <img src="{{ user.image.url }}" alt="{{ user.image }}" width="400" height="300">
+      {% endif %}
+  </div>
+  <div class="col-8">
+    <div class="row">  
+      <h1 class="m-0 mr-3">ID : {{ user.username }}</h1>
+      <br>
+      <h3>이름 : {{ user.last_name }} {{ user.first_name }}</h3>
+    </div>
+    <div class="row">      
+      {% if request.user != user %}
+      <p class="m-0 mx-1">
+      <a class="btn btn-primary text-decoration-none" href="{% url 'accounts:follow' user.pk %}">
+      {% if request.user in user.followers.all %}
+      팔로우 취소
+      {% else %}
+      팔로우
+      {% endif %}
+      </a>
+      </p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-6">
+    {% if request.user == user %}     
+    <a class="btn btn-outline-dark text-decoration-none" href="{% url 'accounts:update' %}" role="button">프로필수정</a>
+    <a class="btn btn-outline-dark text-decoration-none" href="{% url 'accounts:password_edit' %}" role="button">비밀번호변경</a>
+    <a class="btn btn-outline-danger text-decoration-none" href="{% url 'accounts:withdraw' user.pk %}" role="button">회원탈퇴</a>
+    {% endif %}
+  </div>
+</div>
+
+<div class="row my-4">
+  <div class="col-6 d-flex justify-content-start mx-4">
+    <p>팔로우 : {{ user.followings.count }} | 팔로워 : {{ user.followers.count }}</p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-6">
+      <h3>작성한 글</h3>
+      <p class="text-muted">{{ user.review_set.count }}개를 작성하였습니다.</p>
+      {% for review in user.review_set.all %}
+      <p>
+          {{ forloop.counter }}
+          <a href="{% url 'reviews:detail' review.pk %}">{{ review.title }}</a>
+      </p>
+      {% endfor %}
+  </div>
+  <div class="col-6">
+      <h3>작성한 댓글</h3>
+      <p class="text-muted">{{ user.comment_set.count }}개를 작성하였습니다.</p>
+      {% for comment in user.comment_set.all %}
+      <p>
+          {{ forloop.counter }}
+          <a href="{% url 'reviews:detail' comment.review_id %}">{{ comment.content }}</a>
+      </p>
+      {% endfor %}
+  </div>
+</div>
+
+
+{% comment %} <div class="row">
+  <div class="col-6 d-flex justify-content-start mx-4">
+    {% if request.user != user %}
+    <a href="{% url 'accounts:follow' user.pk %}">
+        {% if request.user in user.followers.all %}
+            팔로우 취소
+        {% else %}
+            팔로우
+        {% endif %}
+    </a>
+    {% endif %}
+  </div>
+</div> {% endcomment %}
+
+
+{% endblock body %}

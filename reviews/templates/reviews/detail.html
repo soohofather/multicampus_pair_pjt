@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+
+{% block body %}
+<hr>
+
+<li>작성자: <a href="{% url 'accounts:detail' review.user.pk %}">{{ review.user }}</a></li>
+<li>작성시간 {{ review.created_at }}</li>
+<li>리뷰 영화: {{ review.movie_name }}</li>
+<li>평점: {{ review.grade }}</li>
+<hr>
+<h1 class='text-center'>{{ review.title }}</h1>
+<p>{{ review.content }}<p>
+{% if review.image %}
+<div class='text-center'>
+  <img src="{{ review.image.url }}" alt="{{ review.image }}">
+</div>
+{% endif %}
+{% if request.user == review.user %}
+<div class='d-grid gap-2 my-4'>
+  <a class='btn btn-outline-success btn-sm' href="{% url 'reviews:update' review.pk %}">수정하기</a>
+  <a class='btn btn-outline-danger btn-sm' href="{% url 'reviews:delete' review.pk %}">삭제하기</a>
+</div>
+{% endif %}
+<hr>
+{% if request.user.is_authenticated %}
+  <form action="{% url 'reviews:c_create' review.pk %}" method="POST">
+    {% csrf_token %}
+    {% bootstrap_form comment_form layout="inline" %}
+    {% bootstrap_button button_type="submit" content="댓글작성" %}
+  </form>
+{% endif %}
+<h3 class='text-center'>댓글 목록</h3>
+<hr>
+{% for comment in comments %}
+  <p>{{ comment.user }}  |  {{ comment.created_at }}  |  {{ comment.content }}  |  
+    {% if request.user.is_authenticated %}
+      {% if request.user == comment.user%}
+        <a href="{% url 'reviews:c_delete' review.pk comment.pk %}">삭제</a>
+      {% endif %}
+    {% endif %}
+  </p>
+{% empty %}
+  <p>댓글이 없습니다 ㅠㅠ</p>
+{% endfor %}
+
+{% endblock body %}
